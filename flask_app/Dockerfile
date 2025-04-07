@@ -1,10 +1,12 @@
 FROM python:3.9-slim
 
 WORKDIR /app
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY flask_app/ ./flask_app/
+
+COPY . .
 
 EXPOSE 5000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "flask_app.app:app"]
+CMD ["gunicorn", "--timeout", "120", "--workers", "4", "--bind", "0.0.0.0:5000", "app:app"]
